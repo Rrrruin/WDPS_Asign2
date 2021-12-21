@@ -3,6 +3,9 @@ import csv
 import pandas as pd
 import plotly
 import plotly.express as px
+import matplotlib.pyplot as plt
+import wordcloud
+
 
 def read_data(path):
     content_list = []
@@ -29,5 +32,13 @@ fig = px.histogram(df, x='score')
 fig.update_traces(marker_color="turquoise",marker_line_color='rgb(8,48,107)',
                   marker_line_width=1.5)
 fig.update_layout(title_text='Score Distribution')
-plotly.offline.plot(fig)
+# plotly.offline.plot(fig)
 
+
+# word cloud
+textt = " ".join(review for review in content_list)
+print(textt)
+w = wordcloud.WordCloud().generate(textt)
+plt.imshow(w)
+plt.axis("off")
+plt.savefig('wordcloud.png')
