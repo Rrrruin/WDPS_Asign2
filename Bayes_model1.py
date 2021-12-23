@@ -7,6 +7,8 @@ import csv
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
+from matplotlib import pyplot as plt
+import matplotlib as mpl
 nltk.download('stopwords')
 
 def read_data(path):
@@ -62,15 +64,22 @@ train_score = nb.score(X_train_vect, y_train)
 
 X_test_vect = vect.transform(X_test)
 
-# input_list = []
-# with open('result.csv', encoding='utf-8') as f:
-#     reader = csv.reader(f)
-#     for data in reader:
-#         text = data[1]
-#         input_list.append(text)
-# tokens_input = tokenize(input_list)
-result_df = pd.read_csv('result.csv')
+
+# practice in Youtube comments
+result_df = pd.read_csv('comments.csv')
 X_vec = vect.transform(result_df['text'])
 result = nb.predict(X_vec)
 result_df['result'] = result
 result_df.to_csv('Final_Result.csv')
+
+# Virtualization
+positive = (result_df['result'] == 1).sum()
+negative = (result_df['result'] == 0).sum()
+
+labels = ['positive', 'negative']
+sizes = [positive, negative]
+patches, text1, text2 = plt.pie(sizes, labels=labels, autopct='%1.2f%%')
+plt.show()
+print(mpl.get_backend())
+
+
